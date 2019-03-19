@@ -1,7 +1,6 @@
 const generate_key_url = 'php/generate_key.php';
 const upload_url = 'php/upload.php';
 const enigma_url = 'enigma.php';
-const form = document.querySelector('form');
 
 
 document.getElementById("encode").onclick = encode;
@@ -11,6 +10,12 @@ document.getElementById("decode").onclick = decode;
 
 
 function encode() {
+    var files = document.getElementById("encode_file").files;
+    if (files.length == 0) {
+        alert("Please choose a file to encode!");
+        return;
+    }
+
     // STEP 1: get a key
     var ajaxPostPromise = 
         AjaxPostPromise(generate_key_url, {
@@ -30,7 +35,7 @@ function encode2() {
     var key_name = document.getElementById("key_name").value;
 
     // STEP 2: upload the file
-    const files = document.querySelector('[type=file]').files;
+    const files = document.getElementById("encode_file").files;
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
@@ -58,15 +63,22 @@ function encode2() {
 
 
 function decode() {
+    var files = document.getElementById("decode_file").files;
+    if (files.length == 0) {
+        alert("Please choose a file to decode!");
+        return;
+    }
 
-
-    var key_name = document.getElementById("key_name").value;
-
+    var key_name = document.getElementById("decode_key_name").value;
+    if (key_name.length == 0) {
+        document.getElementById("decode_key_name").focus();
+        alert("Please enter a key to decode!");
+        return;
+    }
 
 
 
     
-    const files = document.querySelector('[type=file]').files;
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {

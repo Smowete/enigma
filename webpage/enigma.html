@@ -1,27 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Index</title>
+	<title>Enigma</title>
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/enigma.css">
+
 	<script src="js/jquery.min.js" type="text/javascript"></script>
 	<script src="js/ajax-promise.js" type="text/javascript"></script>
 </head>
 <body>
 	<div>
-		<h1>Enigma</h1>
-		<p>
+		<h1>Enigma</h1><br/>
+		<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-6">
+					<p class="p-intro">
+						The Enigma machines are a series of electro-mechanical rotor cipher machines, 
+						mainly developed and used in the early- to mid-20th century to protect commercial, 
+						diplomatic and military communication. Enigma was invented by the German engineer 
+						Arthur Scherbius at the end of World War I. Early models were used commercially 
+						from the early 1920s, and adopted by military and government services of several 
+						countries, most notably Nazi Germany before and during World War II.
+					</p>
+					<p class="p-intro">
+						This webpage will simulate the enigma encrypting algorithm to encode or decode your file.
+					</p>
+				</div>
+				<div class="col-sm-4">
+					<img id="profile-pic" class="img-responsive" src="img/enigma.png" width="250" alt="enigma machine" />
+				</div>
+				<div class="col-sm-1"></div>
+		</div>
+		
 
-		</p>
 
+		<br/><br/>
 		<div id="main_area">
-			<form method="post" enctype="multipart/form-data">
-				<input type="file" name="files[]" multiple>
+			<div>
+				<h2>Encode or decode your file with Enigma!</h2>
+				<p>
+					Format currently supported: txt, html
+				</p><br/>
 				
-			</form>
-			<button id="encode">Encode File</button><br/>
-			<button id="decode">Decode File</button><br/>
-			<label>Your key:</label><input type="text" id="key_name"/>
+				<div class="row">
+					
+					<div class="col-sm-1"></div>
+					<div class="col-sm-4 div-ende">
+						<br/>
+						<h3>Encode a file</h3>
+						<form method="post" id="encode_form" enctype="multipart/form-data">
+							<input type="file" id="encode_file" name="files[]" multiple>
+						</form><br/>
+						<label>Your key: &nbsp;</label><input type="text" id="key_name" value="Enter a key or get one"/><br/>
+						<p>If you don't know a existing key, please leave it to generate one when encode</p>
+						<p>Please keep your key carefully as it won't be possible to decode your file without the key.</p><br/>
+						<button id="encode">Encode File</button><br/><br/>
+					</div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-4 div-ende">
+						<br/>
+						<h3>Decode a file</h3>
+						<form method="post" id="decode_form" enctype="multipart/form-data">
+							<input type="file" id="decode_file" name="files[]" multiple>
+						</form><br/>
+						<label>Key: &nbsp;</label><input type="text" id="decode_key_name"/><br/>
+						
+						<p>Please enter the exact same key as you got when the file was encoded.</p><br/>
+						<button id="decode">Decode File</button><br/>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
 		</div>
 	</div>
+
+
+	<br/><br/>
+	<p class="info">
+		&copy; Hongxiao Lyu --- 2019 --- All rights reserved.
+	</p>
 
 	<script src="js/enigma.js" type="text/javascript"></script>
 </body>

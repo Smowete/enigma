@@ -1,0 +1,45 @@
+/*
+Hongxiao Lyu (Daniel)
+Student NO.1664671
+05/06/2017
+CSE154 - A(I)
+TA: Christine Ta
+Creative Assignment
+*/
+
+body {
+    background-color: #ffffff;
+    margin: 0;
+    background: url("http://r.photo.store.qq.com/psb?/V13XUy4d30A1GX/5MTsjxVML.u9ePfdTjylaWZ6LA*ULvXl0CUpNNBzLhA!/r/dBgBAAAAAAAA");
+    text-align: center;
+}
+
+h1 {
+    color: black;
+    font-size: 50pt;
+    font-family: cursive;
+    text-align: center;
+}
+
+h2 {
+    color: black;
+    text-align: center;
+}
+
+.div-ende {
+    border: 4px green dashed;
+}
+
+.p-intro {
+    text-align: left;
+}
+
+
+
+
+main {
+    display: flex;
+    justify-content: space-around;
+}
+
+
