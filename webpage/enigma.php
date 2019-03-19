@@ -10,7 +10,8 @@
     $command;
     $output_file = "result/result.txt";
     if ($mode == "e") {
-        
+        //$key_name = "1AC06F27";
+        //$key_file_name = $key_name . ".key";
         exec("javac Enigma.java", $console);
         $command = "java Enigma -e " . $key_file_name . " " . $file_name . " " . $output_file;
         exec($command, $console);
@@ -32,6 +33,7 @@
         header('Pragma: public');
         header('Content-Length: ' . filesize($output_file));
         readfile($output_file);
+        unlink($file_name);
         unlink($output_file);
     }
     

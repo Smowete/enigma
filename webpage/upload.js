@@ -11,31 +11,27 @@ document.getElementById("decode").onclick = decode;
 
 
 
-
 function encode() {
-    
-    const files = document.querySelector('[type=file]').files;
-    const formData = new FormData();
+    var ajaxPostPromise = 
+        AjaxPostPromise("php/get_key.php", {
 
-    for (let i = 0; i < files.length; i++) {
-        let file = files[i];
-        console.log(i);
-        formData.append('files[]', file);
-    }
-
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    }).then(response => {
-        console.log(response);
-    });
-
-
-    window.open("http://students.washington.edu/lyuh/php_tmp/enigma.php?mode=e&key_name=random01&file_name=uploads/enigma.txt");
+        });
+    ajaxPostPromise
+        .then(JSON.parse)
+        .then(response => {
+            document.getElementById("key_name").innerText = response["key_name"];
+        })
+        .then(encode2)
+        .catch(havingError);
 }
 
 
-function decode() {
+
+function encode2() {
+
+    var key_name = document.getElementById("key_name").innerText;
+
+
     
     const files = document.querySelector('[type=file]').files;
     const formData = new FormData();
@@ -52,4 +48,55 @@ function decode() {
     }).then(response => {
         console.log(response);
     });
+
+
+
+
+
+    
+    var download = "enigma.php?mode=e&key_name=" + key_name + "&file_name=uploads/" + files[0].name;
+    window.open(download);
+}
+
+
+
+
+
+
+function decode() {
+
+
+    var key_name = document.getElementById("key_name").innerText;
+
+
+
+
+    
+    const files = document.querySelector('[type=file]').files;
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+        let file = files[i];
+        console.log(i);
+        formData.append('files[]', file);
+    }
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        console.log(response);
+    });
+
+
+
+
+
+
+    var download = "enigma.php?mode=d&key_name=" + key_name + "&file_name=uploads/" + files[0].name;
+    window.open(download);
+}
+
+function havingError(errorMessage) {
+    alert("Ohhh... There is something wrong: " + errorMessage);
 }
