@@ -33,8 +33,8 @@ public class Enigma {
 	}
 
 	public static void initialization(String keyFileName) throws FileNotFoundException {
-		Scanner standardKeyInpupt = new Scanner(new File("../data/key/standard.key"));
-		Scanner keyInput = new Scanner(new File("../data/key/" + keyFileName));
+		Scanner standardKeyInpupt = new Scanner(new File("data/key/standard.key"));
+		Scanner keyInput = new Scanner(new File("data/key/" + keyFileName));
 
 		String standardKeyString = standardKeyInpupt.nextLine().substring(9);
 		String keyInputString = keyInput.nextLine();
