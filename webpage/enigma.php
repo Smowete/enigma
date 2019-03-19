@@ -35,11 +35,7 @@
         unlink($output_file);
     }
     
-    
 
-    
-    $return = array("result" => "test");
-    print(json_encode($return));
     
 ?>
 

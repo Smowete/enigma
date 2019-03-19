@@ -2,7 +2,8 @@
 <html>
 <head>
 	<title>Index</title>
-	
+	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="js/ajax-promise.js" type="text/javascript"></script>
 </head>
 <body>
 	<div>
@@ -14,8 +15,10 @@
 		<div id="main_area">
 			<form method="post" enctype="multipart/form-data">
 				<input type="file" name="files[]" multiple>
-				<input type="submit" value="Upload File" name="submit">
+				
 			</form>
+			<button id="encode">Encode File</button>
+			<button id="decode">Decode File</button>
 		</div>
 	</div>
 
