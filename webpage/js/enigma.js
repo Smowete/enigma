@@ -1,4 +1,6 @@
-const url = 'upload.php';
+const generate_key_url = 'php/generate_key.php';
+const upload_url = 'php/upload.php';
+const enigma_url = 'enigma.php';
 const form = document.querySelector('form');
 
 
@@ -8,31 +10,26 @@ document.getElementById("decode").onclick = decode;
 
 
 
-
-
-
 function encode() {
+    // STEP 1: get a key
     var ajaxPostPromise = 
-        AjaxPostPromise("php/get_key.php", {
+        AjaxPostPromise(generate_key_url, {
 
         });
     ajaxPostPromise
         .then(JSON.parse)
         .then(response => {
-            document.getElementById("key_name").innerText = response["key_name"];
+            document.getElementById("key_name").value = response["key_name"];
         })
-        .then(encode2)
+        .then(encode2)  // go to step 2
         .catch(havingError);
 }
 
 
-
 function encode2() {
+    var key_name = document.getElementById("key_name").value;
 
-    var key_name = document.getElementById("key_name").innerText;
-
-
-    
+    // STEP 2: upload the file
     const files = document.querySelector('[type=file]').files;
     const formData = new FormData();
 
@@ -42,7 +39,7 @@ function encode2() {
         formData.append('files[]', file);
     }
 
-    fetch(url, {
+    fetch(upload_url, {
         method: 'POST',
         body: formData
     }).then(response => {
@@ -50,11 +47,8 @@ function encode2() {
     });
 
 
-
-
-
-    
-    var download = "enigma.php?mode=e&key_name=" + key_name + "&file_name=" + files[0].name;
+    // STEP 3: encode and return file
+    var download = enigma_url + "?mode=e&key_name=" + key_name + "&file_name=" + files[0].name;
     window.open(download);
 }
 
@@ -66,7 +60,7 @@ function encode2() {
 function decode() {
 
 
-    var key_name = document.getElementById("key_name").innerText;
+    var key_name = document.getElementById("key_name").value;
 
 
 
@@ -81,7 +75,7 @@ function decode() {
         formData.append('files[]', file);
     }
 
-    fetch(url, {
+    fetch(upload_url, {
         method: 'POST',
         body: formData
     }).then(response => {
@@ -91,11 +85,11 @@ function decode() {
 
 
 
-
-
-    var download = "enigma.php?mode=d&key_name=" + key_name + "&file_name=" + files[0].name;
+    var download = enigma_url + "?mode=d&key_name=" + key_name + "&file_name=" + files[0].name;
     window.open(download);
 }
+
+
 
 function havingError(errorMessage) {
     alert("Ohhh... There is something wrong: " + errorMessage);

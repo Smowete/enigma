@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	
+</head>
+
+<body>
+
+<script>
+	var numLines = 10
+	var childrenLines = []
+	for (i = 0; i < numLines; i++) {
+		childrenLines.push([])
+	} 
+	
+	var padding = 20
+	var canvasWidth = 500
+	var canvasHeight = 500
+	var innerWidth = 4
+	var outlineWidth = 6
+	var strokeWidth = 8
+	var minLineDim = 100
+	var maxLineDim = 200
+	
+	var red = '#FF4500'
+	var blue = '#1E90FF'
+	var black = '#000000'
+	var white = '#FFFFFF'
+	
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+	var svgNS = svg.namespaceURI
+	svg.setAttribute('width', canvasWidth + padding * 2)
+	svg.setAttribute('height', canvasHeight + padding * 2)
+	createLine(padding, canvasWidth, canvasHeight, canvasHeight, 'base', black, false)
+	createGraph()
+	console.log(childrenLines)
+	
+	function removeLine(e) {
+		var line = e.target
+		classId = line.getAttribute('class')
+		removeLineHelper(classId)
+	}
+	
+	function removeLineHelper(classId) {
+		lines = svg.querySelectorAll("[class='" + classId + "']")
+		for (j = 0; j < lines.length; j++) {
+			svg.removeChild(lines[j])
+		}
+		
+		removeLists = childrenLines[classId]
+		for (i = 0; i < removeLists.length; i++) {
+			removeLineHelper(removeLists[i])
+		}
+	}
+	
+	function createLine(x1, x2, y1, y2, classId, color, remove = true) {
+		createLineHelper(x1, x2, y1, y2, classId, white, strokeWidth, remove)
+		createLineHelper(x1, x2, y1, y2, classId, black, outlineWidth, remove)
+		createLineHelper(x1, x2, y1, y2, classId, color, innerWidth, remove)
+		document.body.appendChild(svg)
+	}
+	
+	function createLineHelper(x1, x2, y1, y2, classId, color, width, remove = true) {
+		var line = document.createElementNS(svgNS, 'line')
+		line.setAttribute('class', classId)
+		if (remove) {
+			line.onclick = removeLine
+		}
+		line.setAttribute('x1', x1)
+		line.setAttribute('x2', x2)
+		line.setAttribute('y1', y1)
+		line.setAttribute('y2', y2)
+		line.setAttribute('stroke', color)
+		line.setAttribute('stroke-width', width)
+		line.setAttribute('stroke-linecap', 'round')
+		svg.appendChild(line)
+	}
+	
+	function createGraph() {
+		x1 = Math.floor(canvasWidth / 2)
+		y1 = canvasHeight
+		lastParent = 0
+		
+		for (i = 0; i < numLines; i++) {
+			var pt = getNextPt(x1, y1)
+			x2 = pt[0]
+			y2 = pt[1]
+			color = blue
+			if (Math.random() < 0.5) {
+				color = red
+			}
+			createLine(x1, x2, y1, y2, i, color)
+			var updateEnd = true
+			if (Math.random() < 0.1) {
+				updateEnd = false
+			}
+			
+			if (updateEnd) {
+				x1 = x2
+				y1 = y2
+				lastParent = i
+			}
+			
+			if (i != 0) {
+				childrenLines[lastParent].push(i)
+			}
+		}
+	}
+	
+	function getNextPt(x1, y1) {
+		xShift = Math.floor(Math.random() * maxLineDim)
+		yShift = maxLineDim - xShift
+		x2 = shift(x1, xShift, canvasWidth)
+		y2 = shift(y1, yShift, canvasHeight)
+		return [x2, y2]
+	}
+	
+	function shift(original, amount, constraint) {
+		output = original
+		if (original + amount >= constraint || (Math.random() < 0.5 && original - amount >= 0)) {
+			output -= amount
+		} else {
+			output += amount
+		}
+		return output
+	}
+</script>
+
+</body>
+</html>
