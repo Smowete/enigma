@@ -54,7 +54,7 @@ function encode2() {
 
 
     
-    var download = "enigma.php?mode=e&key_name=" + key_name + "&file_name=uploads/" + files[0].name;
+    var download = "enigma.php?mode=e&key_name=" + key_name + "&file_name=" + files[0].name;
     window.open(download);
 }
 
@@ -93,7 +93,7 @@ function decode() {
 
 
 
-    var download = "enigma.php?mode=d&key_name=" + key_name + "&file_name=uploads/" + files[0].name;
+    var download = "enigma.php?mode=d&key_name=" + key_name + "&file_name=" + files[0].name;
     window.open(download);
 }
 

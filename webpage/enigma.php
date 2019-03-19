@@ -8,16 +8,18 @@
 
     $console;
     $command;
-    $output_file = "result/result.txt";
+    $input_file = "uploads/" . $file_name;
+    $file_name_split = explode(".", $file_name);
+
     if ($mode == "e") {
-        //$key_name = "1AC06F27";
-        //$key_file_name = $key_name . ".key";
+        $output_file = "result/" . $file_name_split[0] . "_encoded.txt";
         exec("javac Enigma.java", $console);
-        $command = "java Enigma -e " . $key_file_name . " " . $file_name . " " . $output_file;
+        $command = "java Enigma -e " . $key_file_name . " " . $input_file . " " . $output_file;
         exec($command, $console);
     } else {
+        $output_file = "result/" . $file_name_split[0] . "_decoded.txt";
         exec("javac Enigma.java", $console);
-        $command = "java Enigma -d " . $key_file_name . " " . $file_name . " " . $output_file;
+        $command = "java Enigma -d " . $key_file_name . " " . $input_file . " " . $output_file;
         exec($command, $console);
     }
 
@@ -33,11 +35,9 @@
         header('Pragma: public');
         header('Content-Length: ' . filesize($output_file));
         readfile($output_file);
-        unlink($file_name);
+        unlink($input_file);
         unlink($output_file);
     }
-    
-
     
 ?>
 
