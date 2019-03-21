@@ -1,4 +1,5 @@
 const generate_key_url = 'php/generate_key.php';
+const verify_key_url = 'php/verify_key.php';
 const upload_url = 'php/upload.php';
 const enigma_url = 'enigma.php';
 
@@ -13,6 +14,13 @@ function encode() {
     var files = document.getElementById("encode_file").files;
     if (files.length == 0) {
         alert("Please choose a file to encode!");
+        return;
+    }
+
+    // If a key is provided, skip STEP 1 (getting the key)
+    var check_key = document.getElementById("key_name").value;
+    if (check_key != "" && check_key != "Enter a key or get one") {
+        encode2();
         return;
     }
 
@@ -32,6 +40,29 @@ function encode() {
 
 
 function encode2() {
+    var key_name = document.getElementById("key_name").value;
+
+    // verify key
+    var ajaxPostPromise = 
+        AjaxPostPromise(verify_key_url, {
+            key_name : key_name
+        });
+    ajaxPostPromise
+        .then(JSON.parse)
+        .then(response => {
+            if (response["result"] == 0) {
+                alert("Please enter a valid key or leave it blank to get one!");
+                document.getElementById("key_name").value = "";
+                document.getElementById("key_name").focus();
+                return;
+            }
+            encode3();
+        })
+        .catch(havingError);
+
+}
+
+function encode3() {
     var key_name = document.getElementById("key_name").value;
 
     // STEP 2: upload the file
@@ -60,8 +91,6 @@ function encode2() {
 
 
 
-
-
 function decode() {
     var files = document.getElementById("decode_file").files;
     if (files.length == 0) {
@@ -76,9 +105,31 @@ function decode() {
         return;
     }
 
-
+    // verify key
+    var ajaxPostPromise = 
+    AjaxPostPromise(verify_key_url, {
+        key_name : key_name
+    });
+    ajaxPostPromise
+    .then(JSON.parse)
+    .then(response => {
+        if (response["result"] == 0) {
+            alert("Please enter a valid key!");
+            document.getElementById("decode_key_name").focus();
+            return;
+        }
+        decode3();
+    })
+    .catch(havingError);
 
     
+}
+
+
+function decode3(){
+    var files = document.getElementById("decode_file").files;
+    var key_name = document.getElementById("decode_key_name").value;
+
     const formData = new FormData();
 
     for (let i = 0; i < files.length; i++) {
@@ -100,7 +151,6 @@ function decode() {
     var download = enigma_url + "?mode=d&key_name=" + key_name + "&file_name=" + files[0].name;
     window.open(download);
 }
-
 
 
 function havingError(errorMessage) {
